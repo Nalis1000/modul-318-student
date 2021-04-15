@@ -41,9 +41,9 @@ namespace MyTransportApp
       this.lblFrom = new System.Windows.Forms.Label();
       this.splitDataGrid = new System.Windows.Forms.SplitContainer();
       this.dataGridConnections = new System.Windows.Forms.DataGridView();
+      this.rowDepartureTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.rowFrom = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.rowTo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-      this.rowDepartureTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.rowArrivalTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.rowDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.dataGridStationBoard = new System.Windows.Forms.DataGridView();
@@ -106,7 +106,7 @@ namespace MyTransportApp
       this.cbxTo.Name = "cbxTo";
       this.cbxTo.Size = new System.Drawing.Size(139, 21);
       this.cbxTo.TabIndex = 10;
-      this.cbxTo.TextUpdate += new System.EventHandler(this.InputDeparture_Changed);
+      this.cbxTo.TextUpdate += new System.EventHandler(this.InputDestination_Changed);
       // 
       // lblDate
       // 
@@ -131,7 +131,7 @@ namespace MyTransportApp
       this.cbxFrom.Name = "cbxFrom";
       this.cbxFrom.Size = new System.Drawing.Size(139, 21);
       this.cbxFrom.TabIndex = 7;
-      this.cbxFrom.TextUpdate += new System.EventHandler(this.InputDestination_Changed);
+      this.cbxFrom.TextUpdate += new System.EventHandler(this.InputDeparture_Changed);
       // 
       // btnStop
       // 
@@ -152,6 +152,7 @@ namespace MyTransportApp
       this.btnSearch.Text = "Search Connections";
       this.btnSearch.UseVisualStyleBackColor = true;
       this.btnSearch.Click += new System.EventHandler(this.search);
+      this.btnSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.search);
       // 
       // lblTo
       // 
@@ -192,15 +193,21 @@ namespace MyTransportApp
       // 
       this.dataGridConnections.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
       this.dataGridConnections.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.rowDepartureTime,
             this.rowFrom,
             this.rowTo,
-            this.rowDepartureTime,
             this.rowArrivalTime,
             this.rowDuration});
       this.dataGridConnections.Location = new System.Drawing.Point(3, 0);
       this.dataGridConnections.Name = "dataGridConnections";
       this.dataGridConnections.Size = new System.Drawing.Size(472, 517);
       this.dataGridConnections.TabIndex = 0;
+      // 
+      // rowDepartureTime
+      // 
+      this.rowDepartureTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+      this.rowDepartureTime.HeaderText = "Departure Time";
+      this.rowDepartureTime.Name = "rowDepartureTime";
       // 
       // rowFrom
       // 
@@ -213,12 +220,6 @@ namespace MyTransportApp
       this.rowTo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
       this.rowTo.HeaderText = "To";
       this.rowTo.Name = "rowTo";
-      // 
-      // rowDepartureTime
-      // 
-      this.rowDepartureTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-      this.rowDepartureTime.HeaderText = "Departure Time";
-      this.rowDepartureTime.Name = "rowDepartureTime";
       // 
       // rowArrivalTime
       // 
@@ -270,6 +271,7 @@ namespace MyTransportApp
       this.Controls.Add(this.splitInOut);
       this.Name = "Main";
       this.Text = "Form1";
+      this.Load += new System.EventHandler(this.Main_Load);
       this.splitInOut.Panel1.ResumeLayout(false);
       this.splitInOut.Panel1.PerformLayout();
       this.splitInOut.Panel2.ResumeLayout(false);
@@ -291,11 +293,6 @@ namespace MyTransportApp
     private System.Windows.Forms.Label lblFrom;
     private System.Windows.Forms.SplitContainer splitDataGrid;
     private System.Windows.Forms.DataGridView dataGridConnections;
-    private System.Windows.Forms.DataGridViewTextBoxColumn rowFrom;
-    private System.Windows.Forms.DataGridViewTextBoxColumn rowTo;
-    private System.Windows.Forms.DataGridViewTextBoxColumn rowDepartureTime;
-    private System.Windows.Forms.DataGridViewTextBoxColumn rowArrivalTime;
-    private System.Windows.Forms.DataGridViewTextBoxColumn rowDuration;
     private System.Windows.Forms.Label lblTo;
     private System.Windows.Forms.Button btnStop;
     private System.Windows.Forms.Button btnSearch;
@@ -308,6 +305,11 @@ namespace MyTransportApp
     private System.Windows.Forms.DataGridViewTextBoxColumn rowDeparture;
     private System.Windows.Forms.DataGridViewTextBoxColumn rowTrack;
     private System.Windows.Forms.DataGridViewTextBoxColumn rowDestinationStation;
+    private System.Windows.Forms.DataGridViewTextBoxColumn rowDepartureTime;
+    private System.Windows.Forms.DataGridViewTextBoxColumn rowFrom;
+    private System.Windows.Forms.DataGridViewTextBoxColumn rowTo;
+    private System.Windows.Forms.DataGridViewTextBoxColumn rowArrivalTime;
+    private System.Windows.Forms.DataGridViewTextBoxColumn rowDuration;
   }
 }
 

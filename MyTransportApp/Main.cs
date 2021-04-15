@@ -22,6 +22,21 @@ namespace MyTransportApp
     ITransport transport = new Transport();
     List<Connection> connections = new List<Connection>();
     List<StationBoard> stationboard = new List<StationBoard>();
+    private void CheckIfInput()
+    {
+      if (String.IsNullOrEmpty(cbxFrom.Text) && String.IsNullOrEmpty(cbxTo.Text))
+      {
+        btnSearch.Enabled = false;
+      }
+      else if (String.IsNullOrEmpty(cbxFrom.Text) && chkStationBoard.Checked)
+      {
+        btnSearch.Enabled = true;
+      }
+      else
+      {
+        btnSearch.Enabled = true;
+      }
+    }
     private void GetStationBoard(string station)
     {
       string approvedstation = transport.GetStations(station).StationList[0].Name;
@@ -40,15 +55,15 @@ namespace MyTransportApp
     }
     private void GetRoute(string departure, string arrival)
     {
-      ListConnection(departure, arrival);
+      ListConnection(departure, arrival);      
       for (int i = 0; i < 4; i++)
       {
         dataGridConnections.Rows.Add(new[]
         {
+          connections[i].From.Departure.Value.ToString("HH:mm"),
           connections[i].From.Station.Name,
-          connections[i].To.Station.Name,
-          connections[i].From.Departure.Value.ToString(),
-          connections[i].To.Arrival.Value.ToString(),
+          connections[i].To.Station.Name, 
+          connections[i].To.Arrival.Value.ToString("HH:mm"),
           connections[i].Duration
         });
       }
@@ -56,7 +71,8 @@ namespace MyTransportApp
 
     private void btnStop_Click(object sender, EventArgs e)
     {
-      DialogResult dialogresult = MessageBox.Show("Sind sie sicher, dass das Programm beendet werden soll?", "Programm beenden", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+      DialogResult dialogresult = MessageBox.Show("Sind sie sicher, dass das Programm beendet werden soll?", "Programm beenden",
+        MessageBoxButtons.YesNo, MessageBoxIcon.Error);
       if (dialogresult == DialogResult.Yes)
       {
         Application.Exit();
@@ -65,6 +81,7 @@ namespace MyTransportApp
 
     private void search(object sender, EventArgs e)
     {
+      
       if (chkStationBoard.Checked == true)
       {
         GetStationBoard(cbxFrom.Text);
@@ -76,7 +93,7 @@ namespace MyTransportApp
     }
     private void ListStationBoard(string approvedstation, string id)
     {
-      for (int i = 0; i < transport.GetStationBoard(approvedstation, id).Entries.Count; i++)
+      for (int i = 0; i < stationboard.Count; i++)
       {
         stationboard.Add(transport.GetStationBoard(approvedstation, id).Entries[i]);
       }
@@ -89,38 +106,55 @@ namespace MyTransportApp
         connections.Add(transport.GetConnections(departure, arrival).ConnectionList[i]);
       }
     }
-    public void InputDestination_Changed(object sender, EventArgs e)
-    {
-      
-      if (cbxFrom.Text.Length > 0)
-      {
-        List<Station> station = transport.GetStations(cbxFrom.Text).StationList;
-        foreach (var Stationname in station)
-        {
-          cbxFrom.Items.Add(Stationname.Name);
-        }
-      }
-    }
-
     public void InputDeparture_Changed(object sender, EventArgs e)
     {
       try
       {
-        if (cbxTo.Text.Length > 0)
+        if (cbxFrom.Text.Length > 0 && cbxFrom.SelectedIndex == -1)
         {
-          List<Station> station = transport.GetStations(cbxTo.Text).StationList;
-          foreach (var Stationname in station)
+          cbxFrom.DroppedDown = true;
+          cbxFrom.Items.Clear();
+          cbxFrom.Select(cbxFrom.Text.Length, 0);
+
+          List<Station> station = transport.GetStations(cbxFrom.Text).StationList;
+          if (cbxFrom.Text.Length >= 3)
           {
-            cbxTo.Items.Add(Stationname.Name);
+            foreach (var Stationname in station)
+            {
+              cbxFrom.Items.Add(Stationname.Name);
+            }
           }
         }
       }
-      catch(NoNullAllowedException ex)
+      catch
       {
-        MessageBox.Show("Keine gültige Station gefunden"+ex);
-      }
-      
 
+      }
+      CheckIfInput();
+    }
+
+    public void InputDestination_Changed(object sender, EventArgs e)
+    {
+      try
+      {
+        if (cbxTo.Text.Length > 0 && cbxFrom.SelectedIndex == -1)
+        {
+          cbxTo.DroppedDown = true;
+          cbxTo.Items.Clear();
+          cbxTo.Select(cbxTo.Text.Length, 0);
+
+          List<Station> station = transport.GetStations(cbxTo.Text).StationList;
+          if (cbxFrom.Text.Length >= 3)
+          {
+            foreach (var stationname in station)
+            {
+              cbxTo.Items.Add(stationname.Name);
+            }
+          }
+        }
+      }
+      catch{  }
+      CheckIfInput();
     }
     
     private void StationBoardActive(object sender, EventArgs e)
@@ -136,6 +170,12 @@ namespace MyTransportApp
         cbxTo.Enabled = true;
         btnSearch.Text = "Search Connections";
       }
+    }
+
+    private void Main_Load(object sender, EventArgs e)
+    {
+      dateDeparture.Value = DateTime.Now;
+      CheckIfInput();
     }
   }
 }
