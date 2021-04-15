@@ -89,6 +89,7 @@ namespace MyTransportApp
     private void search(object sender, EventArgs e)
     {
       dataGridConnections.Rows.Clear();
+      dataGridStationBoard.Rows.Clear();
       if (chkStationBoard.Checked == true)
         {
         string date = dateDeparture.Value.ToString("yyyy-MM-dd") + " " + timeDeparture.Value.ToString("HH:mm");
