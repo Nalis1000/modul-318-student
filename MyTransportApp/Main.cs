@@ -82,9 +82,7 @@ namespace MyTransportApp
 
     private void search(object sender, EventArgs e)
     {
-      if (String.IsNullOrEmpty(dataGridConnections.Rows[0].Cells.ToString()))
-      {
-        if (chkStationBoard.Checked == true)
+      if (chkStationBoard.Checked == true)
         {
           GetStationBoard(cbxFrom.Text);
         }
@@ -93,7 +91,7 @@ namespace MyTransportApp
           GetRoute(cbxFrom.Text, cbxTo.Text);
         }
 
-      }
+      
     }
      
     public void InputDeparture_Changed(object sender, EventArgs e)
