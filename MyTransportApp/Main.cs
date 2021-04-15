@@ -21,7 +21,6 @@ namespace MyTransportApp
     }
     ITransport transport = new Transport();
     
-    
     private void CheckIfInput()
     {
       if (String.IsNullOrEmpty(cbxFrom.Text) && String.IsNullOrEmpty(cbxTo.Text))
@@ -83,14 +82,17 @@ namespace MyTransportApp
 
     private void search(object sender, EventArgs e)
     {
-      
-      if (chkStationBoard.Checked == true)
+      if (String.IsNullOrEmpty(dataGridConnections.Rows[0].Cells.ToString()))
       {
-        GetStationBoard(cbxFrom.Text);
-      }
-      else
-      {
-        GetRoute(cbxFrom.Text, cbxTo.Text);
+        if (chkStationBoard.Checked == true)
+        {
+          GetStationBoard(cbxFrom.Text);
+        }
+        else
+        {
+          GetRoute(cbxFrom.Text, cbxTo.Text);
+        }
+
       }
     }
      
@@ -165,5 +167,6 @@ namespace MyTransportApp
       dateDeparture.Value = DateTime.Now;
       CheckIfInput();
     }
+
   }
 }
