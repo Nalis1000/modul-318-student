@@ -38,5 +38,13 @@
 
             Assert.IsNotNull(connections);
         }
+        [TestMethod]
+        public void ConnectionsWithDate()
+        {
+          testee = new Transport();
+          var connections = this.testee.GetConnections("Sursee", "Luzern", "2022-11-31", "17:30");
+
+          Assert.IsNotNull(connections);
+        }
     }
 }

@@ -20,7 +20,9 @@ namespace MyTransportApp
       InitializeComponent();
     }
     ITransport transport = new Transport();
+    //Funktionen
     
+    //Checks if the input textboxes are empty, if they are empty the search button gets disabled except DestinationBoard is checked
     private void CheckIfInput()
     {
       if (String.IsNullOrEmpty(cbxFrom.Text) && String.IsNullOrEmpty(cbxTo.Text))
@@ -36,11 +38,12 @@ namespace MyTransportApp
         btnSearch.Enabled = true;
       }
     }
-    private void GetStationBoard(string station)
+    //Gets data for the staionboard and inputs it into the stationboard
+    private void GetStationBoard(string station, string date)
     {
       string approvedstation = transport.GetStations(station).StationList[0].Name;
       string stationid = transport.GetStations(station).StationList[0].Id;
-      List<StationBoard> stationboard = transport.GetStationBoard(approvedstation, stationid).Entries;
+      List<StationBoard> stationboard = transport.GetStationBoardDate(approvedstation, stationid, date).Entries;
       
 
       for (int i = 0; i < 5; i++)
@@ -54,23 +57,26 @@ namespace MyTransportApp
         });
       }
     }
-    private void GetRoute(string departure, string arrival)
+    //gets data for the connectionboard and inputs it intp the connectionboard
+    private void GetRoute(string departure, string arrival, string date, string time)
     {
-      List<Connection> connections = transport.GetConnections(departure, arrival).ConnectionList;
+      List<Connection> connections = transport.GetConnections(departure, arrival, date, time).ConnectionList;
       for (int i = 0; i < 4; i++)
       {
         dataGridConnections.Rows.Add(new[]
         {
-          connections[i].From.Departure.Value.ToString("HH:mm"),
+          connections[i].From.Departure.Value.ToString("DD:HH:mm"),
           connections[i].From.Station.Name,
           connections[i].To.Station.Name,
-          connections[i].To.Arrival.Value.ToString("HH:mm"),
-          connections[i].Duration.Substring(6)
-        });
+          connections[i].To.Arrival.Value.ToString("DD HH:mm"),
+          connections[i].Duration.Replace("d00", "")
+        }) ;
       }
     }
 
-    private void btnStop_Click(object sender, EventArgs e)
+    //Events
+    //stop button if someone wants to stop the program
+    private void Stop(object sender, EventArgs e)
     {
       DialogResult dialogresult = MessageBox.Show("Sind sie sicher, dass das Programm beendet werden soll?", "Programm beenden",
         MessageBoxButtons.YesNo, MessageBoxIcon.Error);
@@ -79,21 +85,23 @@ namespace MyTransportApp
         Application.Exit();
       }
     }
-
+    //decides on search buttonclick if the user wants stationsboard or connectionboard
     private void search(object sender, EventArgs e)
     {
+      dataGridConnections.Rows.Clear();
       if (chkStationBoard.Checked == true)
         {
-          GetStationBoard(cbxFrom.Text);
+        string date = dateDeparture.Value.ToString("yyyy-MM-dd") + " " + timeDeparture.Value.ToString("HH:mm");
+          GetStationBoard(cbxFrom.Text,date);
         }
         else
         {
-          GetRoute(cbxFrom.Text, cbxTo.Text);
+          GetRoute(cbxFrom.Text, cbxTo.Text, dateDeparture.Value.ToString("yyyy-MM-dd"), timeDeparture.Value.ToString("HH:mm"));
         }
 
       
     }
-     
+     //makes suggestions if the user makes input into From
     public void InputDeparture_Changed(object sender, EventArgs e)
     {
       try
@@ -120,7 +128,7 @@ namespace MyTransportApp
       }
       CheckIfInput();
     }
-
+    // makes suggestions if the user makes input into to
     public void InputDestination_Changed(object sender, EventArgs e)
     {
       try
@@ -144,7 +152,7 @@ namespace MyTransportApp
       catch{  }
       CheckIfInput();
     }
-    
+    // checks if stationboard is selected
     private void StationBoardActive(object sender, EventArgs e)
     {
       if (chkStationBoard.Checked == true)
@@ -162,7 +170,10 @@ namespace MyTransportApp
 
     private void Main_Load(object sender, EventArgs e)
     {
+      dateDeparture.MaxDate = DateTime.Now.AddYears(5);
+      dateDeparture.MinDate = DateTime.Now;      
       dateDeparture.Value = DateTime.Now;
+      timeDeparture.Value = DateTime.Now;
       CheckIfInput();
     }
 

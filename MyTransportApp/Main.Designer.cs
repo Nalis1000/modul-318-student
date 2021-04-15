@@ -30,6 +30,7 @@ namespace MyTransportApp
     private void InitializeComponent()
     {
       this.splitInOut = new System.Windows.Forms.SplitContainer();
+      this.timeDeparture = new System.Windows.Forms.DateTimePicker();
       this.chkStationBoard = new System.Windows.Forms.CheckBox();
       this.cbxTo = new System.Windows.Forms.ComboBox();
       this.lblDate = new System.Windows.Forms.Label();
@@ -71,6 +72,7 @@ namespace MyTransportApp
       // 
       // splitInOut.Panel1
       // 
+      this.splitInOut.Panel1.Controls.Add(this.timeDeparture);
       this.splitInOut.Panel1.Controls.Add(this.chkStationBoard);
       this.splitInOut.Panel1.Controls.Add(this.cbxTo);
       this.splitInOut.Panel1.Controls.Add(this.lblDate);
@@ -88,13 +90,23 @@ namespace MyTransportApp
       this.splitInOut.SplitterDistance = 165;
       this.splitInOut.TabIndex = 0;
       // 
+      // timeDeparture
+      // 
+      this.timeDeparture.CustomFormat = "HH:mm";
+      this.timeDeparture.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+      this.timeDeparture.Location = new System.Drawing.Point(258, 128);
+      this.timeDeparture.Name = "timeDeparture";
+      this.timeDeparture.ShowUpDown = true;
+      this.timeDeparture.Size = new System.Drawing.Size(103, 20);
+      this.timeDeparture.TabIndex = 4;
+      // 
       // chkStationBoard
       // 
       this.chkStationBoard.AutoSize = true;
       this.chkStationBoard.Location = new System.Drawing.Point(539, 128);
       this.chkStationBoard.Name = "chkStationBoard";
       this.chkStationBoard.Size = new System.Drawing.Size(104, 17);
-      this.chkStationBoard.TabIndex = 11;
+      this.chkStationBoard.TabIndex = 7;
       this.chkStationBoard.Text = "Departure Board";
       this.chkStationBoard.UseVisualStyleBackColor = true;
       this.chkStationBoard.CheckedChanged += new System.EventHandler(this.StationBoardActive);
@@ -105,7 +117,7 @@ namespace MyTransportApp
       this.cbxTo.Location = new System.Drawing.Point(69, 80);
       this.cbxTo.Name = "cbxTo";
       this.cbxTo.Size = new System.Drawing.Size(139, 21);
-      this.cbxTo.TabIndex = 10;
+      this.cbxTo.TabIndex = 2;
       this.cbxTo.TextUpdate += new System.EventHandler(this.InputDestination_Changed);
       // 
       // lblDate
@@ -119,10 +131,15 @@ namespace MyTransportApp
       // 
       // dateDeparture
       // 
+      this.dateDeparture.CustomFormat = "";
+      this.dateDeparture.Format = System.Windows.Forms.DateTimePickerFormat.Short;
       this.dateDeparture.Location = new System.Drawing.Point(69, 128);
+      this.dateDeparture.MaxDate = new System.DateTime(2021, 4, 15, 21, 25, 9, 0);
+      this.dateDeparture.MinDate = new System.DateTime(2021, 4, 15, 0, 0, 0, 0);
       this.dateDeparture.Name = "dateDeparture";
-      this.dateDeparture.Size = new System.Drawing.Size(260, 20);
-      this.dateDeparture.TabIndex = 8;
+      this.dateDeparture.Size = new System.Drawing.Size(182, 20);
+      this.dateDeparture.TabIndex = 3;
+      this.dateDeparture.Value = new System.DateTime(2021, 4, 15, 0, 0, 0, 0);
       // 
       // cbxFrom
       // 
@@ -130,7 +147,7 @@ namespace MyTransportApp
       this.cbxFrom.Location = new System.Drawing.Point(69, 45);
       this.cbxFrom.Name = "cbxFrom";
       this.cbxFrom.Size = new System.Drawing.Size(139, 21);
-      this.cbxFrom.TabIndex = 7;
+      this.cbxFrom.TabIndex = 1;
       this.cbxFrom.TextUpdate += new System.EventHandler(this.InputDeparture_Changed);
       // 
       // btnStop
@@ -138,17 +155,17 @@ namespace MyTransportApp
       this.btnStop.Location = new System.Drawing.Point(539, 79);
       this.btnStop.Name = "btnStop";
       this.btnStop.Size = new System.Drawing.Size(142, 23);
-      this.btnStop.TabIndex = 5;
+      this.btnStop.TabIndex = 6;
       this.btnStop.Text = "Stop";
       this.btnStop.UseVisualStyleBackColor = true;
-      this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+      this.btnStop.Click += new System.EventHandler(this.Stop);
       // 
       // btnSearch
       // 
       this.btnSearch.Location = new System.Drawing.Point(539, 45);
       this.btnSearch.Name = "btnSearch";
       this.btnSearch.Size = new System.Drawing.Size(142, 23);
-      this.btnSearch.TabIndex = 4;
+      this.btnSearch.TabIndex = 5;
       this.btnSearch.Text = "Search Connections";
       this.btnSearch.UseVisualStyleBackColor = true;
       this.btnSearch.Click += new System.EventHandler(this.search);
@@ -200,38 +217,45 @@ namespace MyTransportApp
             this.rowDuration});
       this.dataGridConnections.Location = new System.Drawing.Point(3, 0);
       this.dataGridConnections.Name = "dataGridConnections";
+      this.dataGridConnections.ReadOnly = true;
+      this.dataGridConnections.RowHeadersVisible = false;
       this.dataGridConnections.Size = new System.Drawing.Size(472, 517);
-      this.dataGridConnections.TabIndex = 0;
+      this.dataGridConnections.TabIndex = 7;
       // 
       // rowDepartureTime
       // 
       this.rowDepartureTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
       this.rowDepartureTime.HeaderText = "Departure Time";
       this.rowDepartureTime.Name = "rowDepartureTime";
+      this.rowDepartureTime.ReadOnly = true;
       // 
       // rowFrom
       // 
       this.rowFrom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
       this.rowFrom.HeaderText = "From";
       this.rowFrom.Name = "rowFrom";
+      this.rowFrom.ReadOnly = true;
       // 
       // rowTo
       // 
       this.rowTo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
       this.rowTo.HeaderText = "To";
       this.rowTo.Name = "rowTo";
+      this.rowTo.ReadOnly = true;
       // 
       // rowArrivalTime
       // 
       this.rowArrivalTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
       this.rowArrivalTime.HeaderText = "Arrival Time";
       this.rowArrivalTime.Name = "rowArrivalTime";
+      this.rowArrivalTime.ReadOnly = true;
       // 
       // rowDuration
       // 
       this.rowDuration.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
       this.rowDuration.HeaderText = "Duration";
       this.rowDuration.Name = "rowDuration";
+      this.rowDuration.ReadOnly = true;
       // 
       // dataGridStationBoard
       // 
@@ -242,6 +266,7 @@ namespace MyTransportApp
             this.rowDestinationStation});
       this.dataGridStationBoard.Location = new System.Drawing.Point(3, 0);
       this.dataGridStationBoard.Name = "dataGridStationBoard";
+      this.dataGridStationBoard.ReadOnly = true;
       this.dataGridStationBoard.Size = new System.Drawing.Size(298, 517);
       this.dataGridStationBoard.TabIndex = 0;
       // 
@@ -250,18 +275,21 @@ namespace MyTransportApp
       this.rowDeparture.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
       this.rowDeparture.HeaderText = "Departure";
       this.rowDeparture.Name = "rowDeparture";
+      this.rowDeparture.ReadOnly = true;
       // 
       // rowTrack
       // 
       this.rowTrack.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
       this.rowTrack.HeaderText = "Track";
       this.rowTrack.Name = "rowTrack";
+      this.rowTrack.ReadOnly = true;
       // 
       // rowDestinationStation
       // 
       this.rowDestinationStation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
       this.rowDestinationStation.HeaderText = "Destination";
       this.rowDestinationStation.Name = "rowDestinationStation";
+      this.rowDestinationStation.ReadOnly = true;
       // 
       // Main
       // 
@@ -310,6 +338,7 @@ namespace MyTransportApp
     private System.Windows.Forms.DataGridViewTextBoxColumn rowTo;
     private System.Windows.Forms.DataGridViewTextBoxColumn rowArrivalTime;
     private System.Windows.Forms.DataGridViewTextBoxColumn rowDuration;
+    private System.Windows.Forms.DateTimePicker timeDeparture;
   }
 }
 

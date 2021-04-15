@@ -25,7 +25,7 @@
             return HttpClient.GetObject(uri, JsonConvert.DeserializeObject<Stations>);
         }
 
-        public StationBoardRoot GetStationBoard(string station, string id)
+        public StationBoardRoot GetStationBoardDate(string station, string id, string dateTime)
         {
             if (string.IsNullOrEmpty(station))
             {
@@ -37,11 +37,25 @@
                 throw new ArgumentNullException(nameof(id));
             }
 
-            var uri = new Uri($"{WebApiHost}stationboard?station={station}&id={id}");
+            var uri = new Uri($"{WebApiHost}stationboard?station={station}&id={id}&datetime={dateTime}");
             return HttpClient.GetObject(uri, JsonConvert.DeserializeObject<StationBoardRoot>);
         }
+        public StationBoardRoot GetStationBoard(string station, string id)
+        {
+          if (string.IsNullOrEmpty(station))
+          {
+            throw new ArgumentNullException(nameof(station));
+          }
 
-        public Connections GetConnections(string fromStation, string toStation)
+          if (string.IsNullOrEmpty(id))
+          {
+            throw new ArgumentNullException(nameof(id));
+          }
+
+          var uri = new Uri($"{WebApiHost}stationboard?station={station}&id={id}");
+          return HttpClient.GetObject(uri, JsonConvert.DeserializeObject<StationBoardRoot>);
+        }
+    public Connections GetConnections(string fromStation, string toStation,string dateStation, string timeStation)
         {
             if (string.IsNullOrEmpty(fromStation))
             {
@@ -53,11 +67,27 @@
                 throw new ArgumentNullException(nameof(toStation));
             }
 
-            var uri = new Uri($"{WebApiHost}connections?from={fromStation}&to={toStation}");
+            var uri = new Uri($"{WebApiHost}connections?from={fromStation}&to={toStation}&date={dateStation}&time{timeStation}");
             return HttpClient.GetObject(uri, JsonConvert.DeserializeObject<Connections>);
         }
+        public Connections GetConnections(string fromStation, string toStation)
+        {
+          if (string.IsNullOrEmpty(fromStation))
+          {
+            throw new ArgumentNullException(nameof(fromStation));
+          }
 
-        public void Dispose()
+          if (string.IsNullOrEmpty(toStation))
+          {
+            throw new ArgumentNullException(nameof(toStation));
+          }
+
+          var uri = new Uri($"{WebApiHost}connections?from={fromStation}&to={toStation}");
+          return HttpClient.GetObject(uri, JsonConvert.DeserializeObject<Connections>);
+        }
+
+
+    public void Dispose()
         {
             HttpClient?.Dispose();
         }
