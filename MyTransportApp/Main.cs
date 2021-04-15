@@ -20,8 +20,8 @@ namespace MyTransportApp
       InitializeComponent();
     }
     ITransport transport = new Transport();
-    List<Connection> connections = new List<Connection>();
-    List<StationBoard> stationboard = new List<StationBoard>();
+    
+    
     private void CheckIfInput()
     {
       if (String.IsNullOrEmpty(cbxFrom.Text) && String.IsNullOrEmpty(cbxTo.Text))
@@ -41,7 +41,9 @@ namespace MyTransportApp
     {
       string approvedstation = transport.GetStations(station).StationList[0].Name;
       string stationid = transport.GetStations(station).StationList[0].Id;
-      ListStationBoard(station, stationid);
+      List<StationBoard> stationboard = transport.GetStationBoard(approvedstation, stationid).Entries;
+      
+
       for (int i = 0; i < 5; i++)
       {
         dataGridStationBoard.Rows.Add(new[]
@@ -55,16 +57,16 @@ namespace MyTransportApp
     }
     private void GetRoute(string departure, string arrival)
     {
-      ListConnection(departure, arrival);      
+      List<Connection> connections = transport.GetConnections(departure, arrival).ConnectionList;
       for (int i = 0; i < 4; i++)
       {
         dataGridConnections.Rows.Add(new[]
         {
           connections[i].From.Departure.Value.ToString("HH:mm"),
           connections[i].From.Station.Name,
-          connections[i].To.Station.Name, 
+          connections[i].To.Station.Name,
           connections[i].To.Arrival.Value.ToString("HH:mm"),
-          connections[i].Duration
+          connections[i].Duration.Substring(6)
         });
       }
     }
@@ -91,21 +93,7 @@ namespace MyTransportApp
         GetRoute(cbxFrom.Text, cbxTo.Text);
       }
     }
-    private void ListStationBoard(string approvedstation, string id)
-    {
-      for (int i = 0; i < stationboard.Count; i++)
-      {
-        stationboard.Add(transport.GetStationBoard(approvedstation, id).Entries[i]);
-      }
-    }
-   
-    private void ListConnection(string departure, string arrival)
-    {
-      for (int i = 0; i < transport.GetConnections(departure, arrival).ConnectionList.Count; i++)
-      {
-        connections.Add(transport.GetConnections(departure, arrival).ConnectionList[i]);
-      }
-    }
+     
     public void InputDeparture_Changed(object sender, EventArgs e)
     {
       try
@@ -137,7 +125,7 @@ namespace MyTransportApp
     {
       try
       {
-        if (cbxTo.Text.Length > 0 && cbxFrom.SelectedIndex == -1)
+        if (cbxTo.Text.Length > 0 && cbxTo.SelectedIndex == -1)
         {
           cbxTo.DroppedDown = true;
           cbxTo.Items.Clear();
