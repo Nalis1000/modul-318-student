@@ -86,24 +86,28 @@ namespace MyTransportApp
       // splitInOut.Panel2
       // 
       this.splitInOut.Panel2.Controls.Add(this.splitDataGrid);
-      this.splitInOut.Size = new System.Drawing.Size(800, 689);
+      this.splitInOut.Size = new System.Drawing.Size(929, 689);
       this.splitInOut.SplitterDistance = 165;
       this.splitInOut.TabIndex = 0;
       // 
       // timeDeparture
       // 
+      this.timeDeparture.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
       this.timeDeparture.CustomFormat = "HH:mm";
       this.timeDeparture.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
       this.timeDeparture.Location = new System.Drawing.Point(258, 128);
       this.timeDeparture.Name = "timeDeparture";
       this.timeDeparture.ShowUpDown = true;
-      this.timeDeparture.Size = new System.Drawing.Size(103, 20);
+      this.timeDeparture.Size = new System.Drawing.Size(232, 20);
       this.timeDeparture.TabIndex = 4;
       // 
       // chkStationBoard
       // 
+      this.chkStationBoard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.chkStationBoard.AutoSize = true;
-      this.chkStationBoard.Location = new System.Drawing.Point(539, 128);
+      this.chkStationBoard.Location = new System.Drawing.Point(668, 128);
       this.chkStationBoard.Name = "chkStationBoard";
       this.chkStationBoard.Size = new System.Drawing.Size(104, 17);
       this.chkStationBoard.TabIndex = 7;
@@ -131,6 +135,7 @@ namespace MyTransportApp
       // 
       // dateDeparture
       // 
+      this.dateDeparture.Anchor = System.Windows.Forms.AnchorStyles.Left;
       this.dateDeparture.CustomFormat = "";
       this.dateDeparture.Format = System.Windows.Forms.DateTimePickerFormat.Short;
       this.dateDeparture.Location = new System.Drawing.Point(69, 128);
@@ -152,7 +157,9 @@ namespace MyTransportApp
       // 
       // btnStop
       // 
-      this.btnStop.Location = new System.Drawing.Point(539, 79);
+      this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+      this.btnStop.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+      this.btnStop.Location = new System.Drawing.Point(668, 79);
       this.btnStop.Name = "btnStop";
       this.btnStop.Size = new System.Drawing.Size(142, 23);
       this.btnStop.TabIndex = 6;
@@ -162,7 +169,8 @@ namespace MyTransportApp
       // 
       // btnSearch
       // 
-      this.btnSearch.Location = new System.Drawing.Point(539, 45);
+      this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+      this.btnSearch.Location = new System.Drawing.Point(668, 43);
       this.btnSearch.Name = "btnSearch";
       this.btnSearch.Size = new System.Drawing.Size(142, 23);
       this.btnSearch.TabIndex = 5;
@@ -202,12 +210,13 @@ namespace MyTransportApp
       // splitDataGrid.Panel2
       // 
       this.splitDataGrid.Panel2.Controls.Add(this.dataGridStationBoard);
-      this.splitDataGrid.Size = new System.Drawing.Size(800, 520);
-      this.splitDataGrid.SplitterDistance = 483;
+      this.splitDataGrid.Size = new System.Drawing.Size(929, 520);
+      this.splitDataGrid.SplitterDistance = 560;
       this.splitDataGrid.TabIndex = 0;
       // 
       // dataGridConnections
       // 
+      this.dataGridConnections.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.dataGridConnections.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
       this.dataGridConnections.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.rowDepartureTime,
@@ -215,11 +224,11 @@ namespace MyTransportApp
             this.rowTo,
             this.rowArrivalTime,
             this.rowDuration});
-      this.dataGridConnections.Location = new System.Drawing.Point(3, 0);
+      this.dataGridConnections.Location = new System.Drawing.Point(12, 0);
       this.dataGridConnections.Name = "dataGridConnections";
       this.dataGridConnections.ReadOnly = true;
       this.dataGridConnections.RowHeadersVisible = false;
-      this.dataGridConnections.Size = new System.Drawing.Size(472, 517);
+      this.dataGridConnections.Size = new System.Drawing.Size(542, 508);
       this.dataGridConnections.TabIndex = 7;
       // 
       // rowDepartureTime
@@ -259,6 +268,7 @@ namespace MyTransportApp
       // 
       // dataGridStationBoard
       // 
+      this.dataGridStationBoard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
       this.dataGridStationBoard.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
       this.dataGridStationBoard.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.rowDeparture,
@@ -267,7 +277,7 @@ namespace MyTransportApp
       this.dataGridStationBoard.Location = new System.Drawing.Point(3, 0);
       this.dataGridStationBoard.Name = "dataGridStationBoard";
       this.dataGridStationBoard.ReadOnly = true;
-      this.dataGridStationBoard.Size = new System.Drawing.Size(298, 517);
+      this.dataGridStationBoard.Size = new System.Drawing.Size(350, 508);
       this.dataGridStationBoard.TabIndex = 0;
       // 
       // rowDeparture
@@ -293,9 +303,11 @@ namespace MyTransportApp
       // 
       // Main
       // 
+      this.AcceptButton = this.btnSearch;
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(800, 689);
+      this.CancelButton = this.btnStop;
+      this.ClientSize = new System.Drawing.Size(929, 689);
       this.Controls.Add(this.splitInOut);
       this.Name = "Main";
       this.Text = "Form1";

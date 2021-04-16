@@ -21,7 +21,7 @@ namespace MyTransportApp
     }
     ITransport transport = new Transport();
     //Funktionen
-    
+
     //Checks if the input textboxes are empty, if they are empty the search button gets disabled except DestinationBoard is checked
     private void CheckIfInput()
     {
@@ -29,13 +29,14 @@ namespace MyTransportApp
       {
         btnSearch.Enabled = false;
       }
-      else if (String.IsNullOrEmpty(cbxFrom.Text) && chkStationBoard.Checked)
+      else if (!String.IsNullOrEmpty(cbxFrom.Text) && chkStationBoard.Checked)
       {
         btnSearch.Enabled = true;
       }
-      else
+      else if (!String.IsNullOrEmpty(cbxTo.Text) && !String.IsNullOrEmpty(cbxFrom.Text))
       {
         btnSearch.Enabled = true;
+
       }
     }
     //Gets data for the staionboard and inputs it into the stationboard
@@ -44,33 +45,45 @@ namespace MyTransportApp
       string approvedstation = transport.GetStations(station).StationList[0].Name;
       string stationid = transport.GetStations(station).StationList[0].Id;
       List<StationBoard> stationboard = transport.GetStationBoardDate(approvedstation, stationid, date).Entries;
-      
-
-      for (int i = 0; i < 5; i++)
+      try
       {
-        dataGridStationBoard.Rows.Add(new[]
+        for (int i = 0; i < 5; i++)
         {
-            stationboard[i].Stop.Departure.ToString(),
+          dataGridStationBoard.Rows.Add(new[]
+          {
+            stationboard[i].Stop.Departure.ToString("dd.MM.yyyy HH:mm"),
             stationboard[i].Category,
             stationboard[i].To
 
         });
+        }
+      }
+      catch
+      {
+        MessageBox.Show("Es wurde keine gültiger Abfahrtsort gewählt");
       }
     }
     //gets data for the connectionboard and inputs it intp the connectionboard
     private void GetRoute(string departure, string arrival, string date, string time)
     {
-      List<Connection> connections = transport.GetConnections(departure, arrival, date, time).ConnectionList;
-      for (int i = 0; i < 4; i++)
+      try
       {
-        dataGridConnections.Rows.Add(new[]
+        List<Connection> connections = transport.GetConnections(departure, arrival, date, time).ConnectionList;
+        for (int i = 0; i < 4; i++)
         {
-          connections[i].From.Departure.Value.ToString("DD:HH:mm"),
+          dataGridConnections.Rows.Add(new[]
+          {
+          connections[i].From.Departure.Value.ToString(),
           connections[i].From.Station.Name,
           connections[i].To.Station.Name,
-          connections[i].To.Arrival.Value.ToString("DD HH:mm"),
+          connections[i].To.Arrival.Value.ToString(),
           connections[i].Duration.Replace("d00", "")
-        }) ;
+        });
+        }
+      }
+      catch
+      {
+        MessageBox.Show("Es wurde keine gültige Verbindung ausgewählt");
       }
     }
 
@@ -160,13 +173,16 @@ namespace MyTransportApp
       {
         cbxTo.Enabled = false;
         btnSearch.Text = "Create Stationboard";
+        CheckIfInput();
       }
       else
       {
         
         cbxTo.Enabled = true;
         btnSearch.Text = "Search Connections";
+        CheckIfInput();
       }
+      
     }
 
     private void Main_Load(object sender, EventArgs e)
@@ -178,5 +194,6 @@ namespace MyTransportApp
       CheckIfInput();
     }
 
+    
   }
 }

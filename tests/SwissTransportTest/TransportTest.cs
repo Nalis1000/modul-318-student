@@ -30,7 +30,7 @@
             Assert.IsNotNull(stationBoard);
         }
 
-        [TestMethod]
+        [TestMethod]  
         public void Connections()
         {
             testee = new Transport();
